@@ -1,2 +1,3 @@
+include ':shadowlayout'
 include ':app'
 rootProject.name = "Android-ShadowLayout"
