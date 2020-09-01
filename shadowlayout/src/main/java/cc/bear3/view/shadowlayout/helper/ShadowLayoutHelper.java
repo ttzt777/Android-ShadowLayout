@@ -1,19 +1,3 @@
-/*
- * Tencent is pleased to support the open source community by making QMUI_Android available.
- *
- * Copyright (C) 2017-2018 THL A29 Limited, a Tencent company. All rights reserved.
- *
- * Licensed under the MIT License (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- *
- * http://opensource.org/licenses/MIT
- *
- * Unless required by applicable law or agreed to in writing, software distributed under the License is
- * distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
- * either express or implied. See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package cc.bear3.view.shadowlayout.helper;
 
 import android.annotation.TargetApi;
@@ -38,14 +22,9 @@ import androidx.core.content.ContextCompat;
 import java.lang.ref.WeakReference;
 
 import cc.bear3.view.shadowlayout.R;
-import cc.bear3.view.shadowlayout.layout.IQMUILayout;
+import cc.bear3.view.shadowlayout.layout.IShadowLayout;
 
-/**
- * @author cginechen
- * @date 2017-03-10
- */
-
-public class QMUILayoutHelper implements IQMUILayout {
+public class ShadowLayoutHelper implements IShadowLayout {
     public static final int RADIUS_OF_HALF_VIEW_HEIGHT = -1;
     public static final int RADIUS_OF_HALF_VIEW_WIDTH = -2;
     private Context mContext;
@@ -86,7 +65,8 @@ public class QMUILayoutHelper implements IQMUILayout {
     private Paint mClipPaint;
     private PorterDuffXfermode mMode;
     private int mRadius;
-    private @IQMUILayout.HideRadiusSide int mHideRadiusSide = HIDE_RADIUS_SIDE_NONE;
+    private @IShadowLayout.HideRadiusSide
+    int mHideRadiusSide = HIDE_RADIUS_SIDE_NONE;
     private float[] mRadiusArray;
     private boolean mShouldUseRadiusArray;
     private RectF mBorderRect;
@@ -109,19 +89,19 @@ public class QMUILayoutHelper implements IQMUILayout {
     private int mOutlineInsetTop = 0;
     private int mOutlineInsetBottom = 0;
 
-    public QMUILayoutHelper(Context context, AttributeSet attrs, int defAttr, View owner) {
+    public ShadowLayoutHelper(Context context, AttributeSet attrs, int defAttr, View owner) {
         this(context, attrs, defAttr, 0, owner);
     }
 
-    public QMUILayoutHelper(Context context, AttributeSet attrs, int defAttr, int defStyleRes, View owner) {
+    public ShadowLayoutHelper(Context context, AttributeSet attrs, int defAttr, int defStyleRes, View owner) {
         mContext = context;
         mOwner = new WeakReference<>(owner);
         mBottomDividerColor = mTopDividerColor =
-                ContextCompat.getColor(context, R.color.qmui_config_color_separator);
+                ContextCompat.getColor(context, R.color.shadow_config_color_separator);
         mMode = new PorterDuffXfermode(PorterDuff.Mode.DST_OUT);
         mClipPaint = new Paint();
         mClipPaint.setAntiAlias(true);
-        mShadowAlpha = QMUIResHelper.getAttrFloatValue(context, R.attr.qmui_general_shadow_alpha);
+        mShadowAlpha = ShadowResHelper.getAttrFloatValue(context, R.attr.shadow_general_shadow_alpha);
         mBorderRect = new RectF();
 
         int radius = 0, shadow = 0;
@@ -139,80 +119,82 @@ public class QMUILayoutHelper implements IQMUILayout {
                     mWidthMini = ta.getDimensionPixelSize(index, mWidthMini);
                 } else if (index == R.styleable.QMUILayout_android_minHeight) {
                     mHeightMini = ta.getDimensionPixelSize(index, mHeightMini);
-                } else if (index == R.styleable.QMUILayout_qmui_topDividerColor) {
+                } else if (index == R.styleable.QMUILayout_shadow_topDividerColor) {
                     mTopDividerColor = ta.getColor(index, mTopDividerColor);
-                } else if (index == R.styleable.QMUILayout_qmui_topDividerHeight) {
+                } else if (index == R.styleable.QMUILayout_shadow_topDividerHeight) {
                     mTopDividerHeight = ta.getDimensionPixelSize(index, mTopDividerHeight);
-                } else if (index == R.styleable.QMUILayout_qmui_topDividerInsetLeft) {
+                } else if (index == R.styleable.QMUILayout_shadow_topDividerInsetLeft) {
                     mTopDividerInsetLeft = ta.getDimensionPixelSize(index, mTopDividerInsetLeft);
-                } else if (index == R.styleable.QMUILayout_qmui_topDividerInsetRight) {
+                } else if (index == R.styleable.QMUILayout_shadow_topDividerInsetRight) {
                     mTopDividerInsetRight = ta.getDimensionPixelSize(index, mTopDividerInsetRight);
-                } else if (index == R.styleable.QMUILayout_qmui_bottomDividerColor) {
+                } else if (index == R.styleable.QMUILayout_shadow_bottomDividerColor) {
                     mBottomDividerColor = ta.getColor(index, mBottomDividerColor);
-                } else if (index == R.styleable.QMUILayout_qmui_bottomDividerHeight) {
+                } else if (index == R.styleable.QMUILayout_shadow_bottomDividerHeight) {
                     mBottomDividerHeight = ta.getDimensionPixelSize(index, mBottomDividerHeight);
-                } else if (index == R.styleable.QMUILayout_qmui_bottomDividerInsetLeft) {
+                } else if (index == R.styleable.QMUILayout_shadow_bottomDividerInsetLeft) {
                     mBottomDividerInsetLeft = ta.getDimensionPixelSize(index, mBottomDividerInsetLeft);
-                } else if (index == R.styleable.QMUILayout_qmui_bottomDividerInsetRight) {
+                } else if (index == R.styleable.QMUILayout_shadow_bottomDividerInsetRight) {
                     mBottomDividerInsetRight = ta.getDimensionPixelSize(index, mBottomDividerInsetRight);
-                } else if (index == R.styleable.QMUILayout_qmui_leftDividerColor) {
+                } else if (index == R.styleable.QMUILayout_shadow_leftDividerColor) {
                     mLeftDividerColor = ta.getColor(index, mLeftDividerColor);
-                } else if (index == R.styleable.QMUILayout_qmui_leftDividerWidth) {
+                } else if (index == R.styleable.QMUILayout_shadow_leftDividerWidth) {
                     mLeftDividerWidth = ta.getDimensionPixelSize(index, mLeftDividerWidth);
-                } else if (index == R.styleable.QMUILayout_qmui_leftDividerInsetTop) {
+                } else if (index == R.styleable.QMUILayout_shadow_leftDividerInsetTop) {
                     mLeftDividerInsetTop = ta.getDimensionPixelSize(index, mLeftDividerInsetTop);
-                } else if (index == R.styleable.QMUILayout_qmui_leftDividerInsetBottom) {
+                } else if (index == R.styleable.QMUILayout_shadow_leftDividerInsetBottom) {
                     mLeftDividerInsetBottom = ta.getDimensionPixelSize(index, mLeftDividerInsetBottom);
-                } else if (index == R.styleable.QMUILayout_qmui_rightDividerColor) {
+                } else if (index == R.styleable.QMUILayout_shadow_rightDividerColor) {
                     mRightDividerColor = ta.getColor(index, mRightDividerColor);
-                } else if (index == R.styleable.QMUILayout_qmui_rightDividerWidth) {
+                } else if (index == R.styleable.QMUILayout_shadow_rightDividerWidth) {
                     mRightDividerWidth = ta.getDimensionPixelSize(index, mRightDividerWidth);
-                } else if (index == R.styleable.QMUILayout_qmui_rightDividerInsetTop) {
+                } else if (index == R.styleable.QMUILayout_shadow_rightDividerInsetTop) {
                     mRightDividerInsetTop = ta.getDimensionPixelSize(index, mRightDividerInsetTop);
-                } else if (index == R.styleable.QMUILayout_qmui_rightDividerInsetBottom) {
+                } else if (index == R.styleable.QMUILayout_shadow_rightDividerInsetBottom) {
                     mRightDividerInsetBottom = ta.getDimensionPixelSize(index, mRightDividerInsetBottom);
-                } else if (index == R.styleable.QMUILayout_qmui_borderColor) {
+                } else if (index == R.styleable.QMUILayout_shadow_borderColor) {
                     mBorderColor = ta.getColor(index, mBorderColor);
-                } else if (index == R.styleable.QMUILayout_qmui_borderWidth) {
+                } else if (index == R.styleable.QMUILayout_shadow_borderWidth) {
                     mBorderWidth = ta.getDimensionPixelSize(index, mBorderWidth);
-                } else if (index == R.styleable.QMUILayout_qmui_radius) {
+                } else if (index == R.styleable.QMUILayout_shadow_radius) {
                     radius = ta.getDimensionPixelSize(index, 0);
-                } else if (index == R.styleable.QMUILayout_qmui_outerNormalColor) {
+                } else if (index == R.styleable.QMUILayout_shadow_outerNormalColor) {
                     mOuterNormalColor = ta.getColor(index, mOuterNormalColor);
-                } else if (index == R.styleable.QMUILayout_qmui_hideRadiusSide) {
+                } else if (index == R.styleable.QMUILayout_shadow_hideRadiusSide) {
                     mHideRadiusSide = ta.getInt(index, mHideRadiusSide);
-                } else if (index == R.styleable.QMUILayout_qmui_showBorderOnlyBeforeL) {
+                } else if (index == R.styleable.QMUILayout_shadow_showBorderOnlyBeforeL) {
                     mIsShowBorderOnlyBeforeL = ta.getBoolean(index, mIsShowBorderOnlyBeforeL);
-                } else if (index == R.styleable.QMUILayout_qmui_shadowElevation) {
+                } else if (index == R.styleable.QMUILayout_shadow_shadowElevation) {
                     shadow = ta.getDimensionPixelSize(index, shadow);
-                } else if (index == R.styleable.QMUILayout_qmui_shadowAlpha) {
+                } else if (index == R.styleable.QMUILayout_shadow_shadowAlpha) {
                     mShadowAlpha = ta.getFloat(index, mShadowAlpha);
-                } else if (index == R.styleable.QMUILayout_qmui_useThemeGeneralShadowElevation) {
+                } else if (index == R.styleable.QMUILayout_shadow_shadowColor) {
+                    mShadowColor = ta.getColor(index, mShadowColor);
+                } else if (index == R.styleable.QMUILayout_shadow_useThemeGeneralShadowElevation) {
                     useThemeGeneralShadowElevation = ta.getBoolean(index, false);
-                } else if (index == R.styleable.QMUILayout_qmui_outlineInsetLeft) {
+                } else if (index == R.styleable.QMUILayout_shadow_outlineInsetLeft) {
                     mOutlineInsetLeft = ta.getDimensionPixelSize(index, 0);
-                } else if (index == R.styleable.QMUILayout_qmui_outlineInsetRight) {
+                } else if (index == R.styleable.QMUILayout_shadow_outlineInsetRight) {
                     mOutlineInsetRight = ta.getDimensionPixelSize(index, 0);
-                } else if (index == R.styleable.QMUILayout_qmui_outlineInsetTop) {
+                } else if (index == R.styleable.QMUILayout_shadow_outlineInsetTop) {
                     mOutlineInsetTop = ta.getDimensionPixelSize(index, 0);
-                } else if (index == R.styleable.QMUILayout_qmui_outlineInsetBottom) {
+                } else if (index == R.styleable.QMUILayout_shadow_outlineInsetBottom) {
                     mOutlineInsetBottom = ta.getDimensionPixelSize(index, 0);
-                } else if (index == R.styleable.QMUILayout_qmui_outlineExcludePadding) {
+                } else if (index == R.styleable.QMUILayout_shadow_outlineExcludePadding) {
                     mIsOutlineExcludePadding = ta.getBoolean(index, false);
                 }
             }
             ta.recycle();
         }
 //        if (shadow == 0 && useThemeGeneralShadowElevation) {
-//            shadow = QMUIResHelper.getAttrDimen(context, R.attr.qmui_general_shadow_elevation);
+//            shadow = QMUIResHelper.getAttrDimen(context, R.attr.shadow_general_shadow_elevation);
 //
 //        }
-        setRadiusAndShadow(radius, mHideRadiusSide, shadow, mShadowAlpha);
+        setRadiusAndShadow(radius, mHideRadiusSide, shadow, mShadowColor, mShadowAlpha);
     }
 
     @Override
     public void setUseThemeGeneralShadowElevation() {
-//        mShadowElevation = QMUIResHelper.getAttrDimen(mContext, R.attr.qmui_general_shadow_elevation);
+//        mShadowElevation = QMUIResHelper.getAttrDimen(mContext, R.attr.shadow_general_shadow_elevation);
         setRadiusAndShadow(mRadius, mHideRadiusSide, mShadowElevation, mShadowAlpha);
     }
 
@@ -398,7 +380,7 @@ public class QMUILayoutHelper implements IQMUILayout {
     }
 
     @Override
-    public void setRadius(int radius, @IQMUILayout.HideRadiusSide int hideRadiusSide) {
+    public void setRadius(int radius, @IShadowLayout.HideRadiusSide int hideRadiusSide) {
         if (mRadius == radius && hideRadiusSide == mHideRadiusSide) {
             return;
         }
@@ -416,7 +398,7 @@ public class QMUILayoutHelper implements IQMUILayout {
     }
 
     @Override
-    public void setRadiusAndShadow(int radius, @IQMUILayout.HideRadiusSide int hideRadiusSide, int shadowElevation, float shadowAlpha) {
+    public void setRadiusAndShadow(int radius, @IShadowLayout.HideRadiusSide int hideRadiusSide, int shadowElevation, float shadowAlpha) {
         setRadiusAndShadow(radius, hideRadiusSide, shadowElevation, mShadowColor, shadowAlpha);
     }
 
@@ -691,7 +673,7 @@ public class QMUILayoutHelper implements IQMUILayout {
 
     public void drawDividers(Canvas canvas, int w, int h) {
         View owner = mOwner.get();
-        if(owner == null){
+        if (owner == null) {
             return;
         }
         if (mDividerPaint == null &&
@@ -743,17 +725,17 @@ public class QMUILayoutHelper implements IQMUILayout {
     }
 
 
-    private int getRealRadius(){
+    private int getRealRadius() {
         View owner = mOwner.get();
         if (owner == null) {
             return mRadius;
         }
         int radius;
-        if(mRadius == RADIUS_OF_HALF_VIEW_HEIGHT){
-            radius = owner.getHeight() /2;
-        }else if(mRadius == RADIUS_OF_HALF_VIEW_WIDTH){
+        if (mRadius == RADIUS_OF_HALF_VIEW_HEIGHT) {
+            radius = owner.getHeight() / 2;
+        } else if (mRadius == RADIUS_OF_HALF_VIEW_WIDTH) {
             radius = owner.getWidth() / 2;
-        }else{
+        } else {
             radius = mRadius;
         }
         return radius;
@@ -790,11 +772,11 @@ public class QMUILayoutHelper implements IQMUILayout {
                     height - owner.getPaddingBottom() - halfBorderWith);
         } else {
             mBorderRect.set(halfBorderWith, halfBorderWith,
-                    width- halfBorderWith, height - halfBorderWith);
+                    width - halfBorderWith, height - halfBorderWith);
         }
 
-        if(mShouldUseRadiusArray){
-            if(mRadiusArray == null){
+        if (mShouldUseRadiusArray) {
+            if (mRadiusArray == null) {
                 mRadiusArray = new float[8];
             }
             if (mHideRadiusSide == HIDE_RADIUS_SIDE_TOP) {

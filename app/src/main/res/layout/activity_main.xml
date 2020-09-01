@@ -8,11 +8,20 @@
     android:gravity="center"
     tools:context=".MainActivity">
 
-    <cc.bear3.view.shadowlayout.layout.QMUILinearLayout
-        android:id="@+id/layout"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
-        android:orientation="vertical"
-        android:background="#FFFFFF"  />
+<!--    <LinearLayout-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="vertical">-->
+        <cc.bear3.view.shadowlayout.layout.ShadowLinearLayout
+            android:id="@+id/layout"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:orientation="vertical"
+            app:shadow_shadowAlpha="1"
+            app:shadow_shadowColor="#FFCE25"
+            app:shadow_shadowElevation="50dp"
+            app:shadow_radius="4dp"
+            android:background="#FFFFFF"  />
+<!--    </LinearLayout>-->
 
 </LinearLayout>

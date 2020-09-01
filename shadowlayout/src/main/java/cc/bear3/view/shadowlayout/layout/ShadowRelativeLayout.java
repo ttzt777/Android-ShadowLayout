@@ -1,55 +1,34 @@
-/*
- * Tencent is pleased to support the open source community by making QMUI_Android available.
- *
- * Copyright (C) 2017-2018 THL A29 Limited, a Tencent company. All rights reserved.
- *
- * Licensed under the MIT License (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- *
- * http://opensource.org/licenses/MIT
- *
- * Unless required by applicable law or agreed to in writing, software distributed under the License is
- * distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
- * either express or implied. See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package cc.bear3.view.shadowlayout.layout;
 
 import android.content.Context;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.ColorInt;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
-import cc.bear3.view.shadowlayout.helper.QMUILayoutHelper;
+import cc.bear3.view.shadowlayout.helper.ShadowLayoutHelper;
 
-/**
- * @author cginechen
- * @date 2017-03-10
- */
+public class ShadowRelativeLayout extends RelativeLayout implements IShadowLayout {
+    private ShadowLayoutHelper mLayoutHelper;
 
-public class QMUIConstraintLayout extends ConstraintLayout implements IQMUILayout {
-    private QMUILayoutHelper mLayoutHelper;
-
-    public QMUIConstraintLayout(Context context) {
+    public ShadowRelativeLayout(Context context) {
         super(context);
         init(context, null, 0);
     }
 
-    public QMUIConstraintLayout(Context context, AttributeSet attrs) {
+    public ShadowRelativeLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context, attrs, 0);
     }
 
-    public QMUIConstraintLayout(Context context, AttributeSet attrs, int defStyleAttr) {
+    public ShadowRelativeLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context, attrs, defStyleAttr);
     }
 
     private void init(Context context, AttributeSet attrs, int defStyleAttr) {
-        mLayoutHelper = new QMUILayoutHelper(context, attrs, defStyleAttr, this);
+        mLayoutHelper = new ShadowLayoutHelper(context, attrs, defStyleAttr, this);
     }
 
     @Override
@@ -144,13 +123,13 @@ public class QMUIConstraintLayout extends ConstraintLayout implements IQMUILayou
     }
 
     @Override
-    public void setRadiusAndShadow(int radius, @HideRadiusSide int hideRadiusSide, int shadowElevation, final float shadowAlpha) {
+    public void setRadiusAndShadow(int radius, @ShadowLayoutHelper.HideRadiusSide int hideRadiusSide, int shadowElevation, final float shadowAlpha) {
         mLayoutHelper.setRadiusAndShadow(radius, hideRadiusSide, shadowElevation, shadowAlpha);
     }
 
     @Override
     public void setRadiusAndShadow(int radius, int hideRadiusSide, int shadowElevation, int shadowColor, float shadowAlpha) {
-        mLayoutHelper.setRadiusAndShadow(radius, hideRadiusSide, shadowElevation,  shadowColor, shadowAlpha);
+        mLayoutHelper.setRadiusAndShadow(radius, hideRadiusSide, shadowElevation, shadowColor, shadowAlpha);
     }
 
     @Override
@@ -159,7 +138,7 @@ public class QMUIConstraintLayout extends ConstraintLayout implements IQMUILayou
     }
 
     @Override
-    public void setRadius(int radius, @HideRadiusSide int hideRadiusSide) {
+    public void setRadius(int radius, @ShadowLayoutHelper.HideRadiusSide int hideRadiusSide) {
         mLayoutHelper.setRadius(radius, hideRadiusSide);
     }
 
@@ -171,6 +150,16 @@ public class QMUIConstraintLayout extends ConstraintLayout implements IQMUILayou
     @Override
     public void setOutlineInset(int left, int top, int right, int bottom) {
         mLayoutHelper.setOutlineInset(left, top, right, bottom);
+    }
+
+    @Override
+    public void setHideRadiusSide(int hideRadiusSide) {
+        mLayoutHelper.setHideRadiusSide(hideRadiusSide);
+    }
+
+    @Override
+    public int getHideRadiusSide() {
+        return mLayoutHelper.getHideRadiusSide();
     }
 
     @Override
@@ -189,16 +178,6 @@ public class QMUIConstraintLayout extends ConstraintLayout implements IQMUILayou
     public void setShowBorderOnlyBeforeL(boolean showBorderOnlyBeforeL) {
         mLayoutHelper.setShowBorderOnlyBeforeL(showBorderOnlyBeforeL);
         invalidate();
-    }
-
-    @Override
-    public void setHideRadiusSide(int hideRadiusSide) {
-        mLayoutHelper.setHideRadiusSide(hideRadiusSide);
-    }
-
-    @Override
-    public int getHideRadiusSide() {
-        return mLayoutHelper.getHideRadiusSide();
     }
 
     @Override
@@ -230,36 +209,14 @@ public class QMUIConstraintLayout extends ConstraintLayout implements IQMUILayou
     }
 
     @Override
-    public void updateBottomSeparatorColor(int color) {
-        mLayoutHelper.updateBottomSeparatorColor(color);
-    }
-
-    @Override
-    public void updateLeftSeparatorColor(int color) {
-        mLayoutHelper.updateLeftSeparatorColor(color);
-    }
-
-    @Override
-    public void updateRightSeparatorColor(int color) {
-        mLayoutHelper.updateRightSeparatorColor(color);
-    }
-
-    @Override
-    public void updateTopSeparatorColor(int color) {
-        mLayoutHelper.updateTopSeparatorColor(color);
-    }
-
-    @Override
     public void setShadowElevation(int elevation) {
         mLayoutHelper.setShadowElevation(elevation);
     }
 
-    @Override
     public int getShadowElevation() {
         return mLayoutHelper.getShadowElevation();
     }
 
-    @Override
     public void setShadowAlpha(float shadowAlpha) {
         mLayoutHelper.setShadowAlpha(shadowAlpha);
     }
@@ -285,7 +242,27 @@ public class QMUIConstraintLayout extends ConstraintLayout implements IQMUILayou
     }
 
     @Override
-    public void dispatchDraw(Canvas canvas) {
+    public void updateBottomSeparatorColor(int color) {
+        mLayoutHelper.updateBottomSeparatorColor(color);
+    }
+
+    @Override
+    public void updateLeftSeparatorColor(int color) {
+        mLayoutHelper.updateLeftSeparatorColor(color);
+    }
+
+    @Override
+    public void updateRightSeparatorColor(int color) {
+        mLayoutHelper.updateRightSeparatorColor(color);
+    }
+
+    @Override
+    public void updateTopSeparatorColor(int color) {
+        mLayoutHelper.updateTopSeparatorColor(color);
+    }
+
+    @Override
+    protected void dispatchDraw(Canvas canvas) {
         super.dispatchDraw(canvas);
         mLayoutHelper.drawDividers(canvas, getWidth(), getHeight());
         mLayoutHelper.dispatchRoundBorderDraw(canvas);

@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.novoda.bintray-release'
 
 android {
     compileSdkVersion 29
@@ -20,6 +21,16 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
+
+    //忽略警告
+    lintOptions {
+        abortOnError false
+    }
 }
 
 dependencies {
@@ -30,4 +41,14 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
     implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
+}
+
+publish {
+    repoName = 'view'
+    userOrg = 'ttzt777'//bintray.com用户名
+    groupId = 'cc.bear3.view.shadowlayout'//jcenter上的路径
+    artifactId = 'shadowlayout'//项目名称
+    publishVersion = "${version_name}"//版本号
+    desc = 'Android Shadow Layout'//描述，不重要
+    website = 'https://github.com/ttzt777/Android-ShadowLayout'//网站，最好有，不重要
 }

@@ -1,19 +1,3 @@
-/*
- * Tencent is pleased to support the open source community by making QMUI_Android available.
- *
- * Copyright (C) 2017-2018 THL A29 Limited, a Tencent company. All rights reserved.
- *
- * Licensed under the MIT License (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- *
- * http://opensource.org/licenses/MIT
- *
- * Unless required by applicable law or agreed to in writing, software distributed under the License is
- * distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
- * either express or implied. See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package cc.bear3.view.shadowlayout.layout;
 
 import android.content.Context;
@@ -23,33 +7,28 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.ColorInt;
 
-import cc.bear3.view.shadowlayout.helper.QMUILayoutHelper;
+import cc.bear3.view.shadowlayout.helper.ShadowLayoutHelper;
 
-/**
- * @author cginechen
- * @date 2017-03-10
- */
+public class ShadowLinearLayout extends LinearLayout implements IShadowLayout {
+    private ShadowLayoutHelper mLayoutHelper;
 
-public class QMUILinearLayout extends LinearLayout implements IQMUILayout {
-    private QMUILayoutHelper mLayoutHelper;
-
-    public QMUILinearLayout(Context context) {
+    public ShadowLinearLayout(Context context) {
         super(context);
         init(context, null, 0);
     }
 
-    public QMUILinearLayout(Context context, AttributeSet attrs) {
+    public ShadowLinearLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context, attrs, 0);
     }
 
-    public QMUILinearLayout(Context context, AttributeSet attrs, int defStyleAttr) {
+    public ShadowLinearLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context, attrs, defStyleAttr);
     }
 
     private void init(Context context, AttributeSet attrs, int defStyleAttr) {
-        mLayoutHelper = new QMUILayoutHelper(context, attrs, defStyleAttr, this);
+        mLayoutHelper = new ShadowLayoutHelper(context, attrs, defStyleAttr, this);
     }
 
     @Override
@@ -144,7 +123,7 @@ public class QMUILinearLayout extends LinearLayout implements IQMUILayout {
     }
 
     @Override
-    public void setRadiusAndShadow(int radius, @QMUILayoutHelper.HideRadiusSide int hideRadiusSide, int shadowElevation, final float shadowAlpha) {
+    public void setRadiusAndShadow(int radius, @ShadowLayoutHelper.HideRadiusSide int hideRadiusSide, int shadowElevation, final float shadowAlpha) {
         mLayoutHelper.setRadiusAndShadow(radius, hideRadiusSide, shadowElevation, shadowAlpha);
     }
 
@@ -159,7 +138,7 @@ public class QMUILinearLayout extends LinearLayout implements IQMUILayout {
     }
 
     @Override
-    public void setRadius(int radius, @QMUILayoutHelper.HideRadiusSide int hideRadiusSide) {
+    public void setRadius(int radius, @ShadowLayoutHelper.HideRadiusSide int hideRadiusSide) {
         mLayoutHelper.setRadius(radius, hideRadiusSide);
     }
 
